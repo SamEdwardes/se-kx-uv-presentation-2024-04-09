@@ -1,8 +1,10 @@
 ---
 title: Using uv with Python
+subtitle: "How to use uv to manage your Python packages and environments"
 date: 2024-04-09
 author: Sam Edwardes
-format: revealjs
+format:
+    revealjs: default
 ---
 
 ## uv
@@ -136,3 +138,9 @@ alias uvsync="uv pip compile requirements.in --quiet --output-file requirements.
 -   `poetry`
 -   `pip-tools`
 -   `hatch`
+
+## Links
+
+- GitHub repo: <https://github.com/SamEdwardes/se-kx-uv-presentation-2024-04-09>
+- Rendered slides: <https://samedwardes.quarto.pub/se-kx-uv-presentation-2024-04-09/#/title-slide>
+- Poetry SE KX: <https://samedwardes.quarto.pub/using-poetry-for-python-dependency-management/>

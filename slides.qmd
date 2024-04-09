@@ -1,0 +1,138 @@
+---
+title: Using uv with Python
+date: 2024-04-09
+author: Sam Edwardes
+format: revealjs
+---
+
+## uv
+
+> An extremely fast Python package installer and resolver, written in Rust. Designed as a drop-in replacement for common pip and pip-tools workflows.
+
+Created by <https://astral.sh>, the same people who make the popular linter and formatter `ruff`. See <https://github.com/astral-sh/uv> for more information.
+
+## Why uv? {.smaller}
+
+-   Forces best practices. By default uv will only install packages into virtual environments. `pip` is not even included in your virtual environment 🤯.
+-   Really fast resolver and installer. This shines on slower Workbench instances.
+-   Ensures that your environment always matches your requirements. Makes it easy and safe to remove packages.
+-   Simpler than other tools like `poetry`.
+-   More exciting things to come in the future from the Astral team:
+
+> uv represents an intermediary goal in our pursuit of a "Cargo for Python": a comprehensive project and package manager that is extremely fast, reliable, and easy to use.
+
+## TL/DR
+
+Install:
+
+``` bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+Use:
+
+``` bash
+# Create a virtual environment
+uv venv
+
+# Resolve requirements and "sync" environment
+uv pip compile requirements.in --output-file requirements.txt
+uv pip sync requirements.txt
+```
+
+## Usage - create a virtual environment
+
+``` bash
+$ uv venv
+Using Python 3.12.2 interpreter at: /Users/samedwardes/.pyenv/versions/3.12.2/bin/python3
+Creating virtualenv at: .venv
+Activate with: source .venv/bin/activate
+```
+
+-   Environment will not include `pip`, `wheel` or `setuptools`.
+-   Useful options
+    -   `--python`: The Python interpreter to use for the virtual environment.
+    -   `--seed`: Include `pip`, `wheel` or `setuptools`.
+    -   `--index-url`: Where to install packages from.
+
+## Usage - install a package
+
+``` bash
+$ uv pip install pandas
+Resolved 6 packages in 44ms
+Installed 4 packages in 79ms
+ + numpy==1.26.4
+ + pandas==2.2.1
+ + pytz==2024.1
+ + tzdata==2024.1
+
+$ uv pip list
+...
+```
+
+-   You do not need to specify a virtual environment. uv will find your virtual environment and install into it.
+-   Human readable output.
+-   Very fast!
+
+## Project workflow (1/3)
+
+-   Create a virtual environment.
+
+``` bash
+uv venv
+source .venv/bin/activate
+```
+
+-   Create a `requirements.in`. Define your top level dependencies in here. Pin the version.
+
+``` bash
+tee requirements.in <<EOF
+jupyterlab==4.1.6
+pandas==2.2.1
+EOF
+```
+
+## Project workflow (2/3)
+
+-   Compile to generate the complete list of requirements.
+
+``` bash
+uv pip compile requirements.in --output-file requirements.txt
+```
+
+-   Sync your environment to match exactly what is in `requirements.txt`.
+
+``` bash
+uv pip sync requirements.txt
+```
+
+-   Change `requirements.in`.
+
+``` bash
+tee requirements.in <<EOF
+jupyterlab==4.1.6
+httpx
+EOF
+```
+
+-   Run compile and sync again.
+
+``` bash
+uv pip compile requirements.in --output-file requirements.txt
+uv pip sync requirements.txt
+```
+
+## Aliases
+
+``` bash
+alias uvinit="uv venv && source .venv/bin/activate"
+alias uvsync="uv pip compile requirements.in --quiet --output-file requirements.txt && uv pip sync requirements.txt"
+```
+
+## Other solutions
+
+-   `pip`
+-   `conda`
+-   `poetry`
+-   `pip-tools`
+-   `hatch`

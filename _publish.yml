@@ -1,0 +1,4 @@
+- source: slides.qmd
+  quarto-pub:
+    - id: 7684852b-a112-4104-a759-8ff282fad492
+      url: 'https://samedwardes.quarto.pub/se-kx-uv-presentation-2024-04-09'
